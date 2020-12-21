@@ -76,6 +76,16 @@
                       cols="12"
                     >
                       <v-text-field
+                        v-model="editedItem.password"
+                        label="Password"
+                      ></v-text-field>
+                    </v-col>
+
+
+                    <v-col
+                      cols="12"
+                    >
+                      <v-text-field
                         v-model="editedItem.rol"
                         label="Rol"
                       ></v-text-field>
@@ -186,6 +196,7 @@ export default {
       id: 0,
       nombre: '',
       email: '',
+      password: '',
       rol: '',
       estado: 0,
     },
@@ -193,6 +204,7 @@ export default {
       id: 0,
       nombre: '',
       email: '',
+      password: '',
       rol: '',
       estado: 0,
     },
@@ -248,8 +260,12 @@ export default {
     deleteItemConfirm () {
       if (this.editedItem.estado === 1) {
         //put
-        axios.put('http://localhost:3000/api/categoria/deactivate',{
+        axios.put('http://localhost:3000/api/usuario/deactivate',{
           "id": this.editedItem.id,
+        }, {
+          headers:{
+            token: this.$store.state.token
+          }
         })
         .then( response =>{
           this.list();
@@ -259,8 +275,12 @@ export default {
         })
       } else {
         //post
-        axios.put('http://localhost:3000/api/categoria/activate',{
+        axios.put('http://localhost:3000/api/usuario/activate',{
           "id": this.editedItem.id,
+        }, {
+          headers:{
+            token: this.$store.state.token
+          }
         })
         .then( response =>{
           this.list();
@@ -294,10 +314,15 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         //put
-        axios.put('http://localhost:3000/api/categoria/update',{
+        axios.put('http://localhost:3000/api/usuario/update',{
           "id": this.editedItem.id,
           "nombre": this.editedItem.nombre,
-          "descripcion": this.editedItem.descripcion,
+          "rol": this.editedItem.rol,
+          "email": this.editedItem.email,
+        }, {
+          headers:{
+            token: this.$store.state.token
+          }
         })
         .then( response =>{
           this.list();
@@ -307,10 +332,16 @@ export default {
         })
       } else {
         //post
-        axios.post('http://localhost:3000/api/categoria/add',{
-          "estado": 1,
+        axios.post('http://localhost:3000/api/usuario/add',{
+          "estado": 0,
           "nombre": this.editedItem.nombre,
-          "descripcion": this.editedItem.descripcion,
+          "rol": this.editedItem.rol,
+          "email": this.editedItem.email,
+          "password": this.editedItem.password,
+        }, {
+          headers:{
+            token: this.$store.state.token
+          }
         })
         .then( response =>{
           this.list();
