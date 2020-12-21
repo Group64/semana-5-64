@@ -5,3 +5,6 @@
 npm install
 ```
 
+### Compiles
+```
+npm run dev
