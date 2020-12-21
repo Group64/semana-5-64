@@ -10,13 +10,14 @@ exports.login = async(req, res, next) => {
             const passwordIsValid = bcrypt.compareSync(req.body.password , user.password);
             if (passwordIsValid) {
                 const token = await tokenServices.encode(user);
-                //res.status(200).send({ 
-                res.status(200).json({
-                    user: user,
+                res.status(200).send({ 
+                //res.status(200).json({
+                    // user: user,
+                    auth: true,
                     tokenReturn: token
                     // accessToken: token
                     // user: user
-                    // auth: true,
+                    
                 });
             } else {
                 res.status(401).send({ auth: false, accessToken: null, reason: "Invalid Password!" });

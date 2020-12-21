@@ -4,13 +4,11 @@ const categoria = require('../models/categoria');
 exports.list = async(req, res, next) =>{
     try{
         const register = await models.Articulo.findAll(
-        //    {include:[{model: models.Categoria, as: 'categoria', attributes: ["id", "nombre", "descripcion"]},]}
+            {include:[{model: models.Categoria, as: 'categoria', attributes: ["id", "nombre", "descripcion"]},]}
         );
         if(register){
-            //res.status(200).json(register);
-            res.status(200).send({
-                register
-            });
+            res.status(200).json(register);
+            //res.status(200).send({register});
         }else{
             res.status(404).send({
                 message: 'No hay Articulos registrados'
@@ -38,7 +36,7 @@ exports.add = async(req, res, next) =>{
 
 exports.update = async(req, res, next) =>{
     try{
-        const register = await models.Articulo.update({estado: req.body.estado, codigo: req.body.codigo, nombre: req.body.nombre, descripcion: req.body.descripcion, categoriId: req.body.categoriId},
+        const register = await models.Articulo.update({estado: req.body.estado, codigo: req.body.codigo, nombre: req.body.nombre, descripcion: req.body.descripcion, categoriaId: req.body.categoriaId},
                 {
                     where: {
                         id: req.body.id

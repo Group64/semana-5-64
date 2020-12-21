@@ -3,6 +3,7 @@ const usuarioController = require('../../controllers/UsuarioController');
 const auth = require('../../middlewares/auth')
 
 router.get('/list', auth.verificarAdministrador, usuarioController.list);
+// router.get('/list', usuarioController.list);
 router.post('/add', auth.verificarAdministrador, usuarioController.add);
 router.put('/update', auth.verificarAdministrador, usuarioController.update);
 router.post('/login', usuarioController.login);
