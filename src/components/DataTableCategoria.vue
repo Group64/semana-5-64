@@ -3,9 +3,11 @@
   <v-app id="inspire">
     <v-data-table
       :headers="headers"
-      :items="desserts"
-      sort-by="calories"
+      :items="categorias"
+      sort-by="nombre"
       class="elevation-1"
+      :loading="cargando"
+      loading-text="Loading... Please wait"
     >
       <template v-slot:top>
         <v-toolbar
@@ -30,7 +32,7 @@
                 v-bind="attrs"
                 v-on="on"
               >
-                New Item
+                Agregar Categoria
               </v-btn>
             </template>
             <v-card>
@@ -43,54 +45,24 @@
                   <v-row>
                     <v-col
                       cols="12"
-                      sm="6"
-                      md="4"
                     >
                       <v-text-field
-                        v-model="editedItem.name"
-                        label="Dessert name"
+                        v-model="editedItem.nombre"
+                        label="Nombre"
                       ></v-text-field>
                     </v-col>
                     <v-col
                       cols="12"
-                      sm="6"
-                      md="4"
                     >
-                      <v-text-field
-                        v-model="editedItem.calories"
-                        label="Calories"
-                      ></v-text-field>
+                      <v-textarea
+                        v-model="editedItem.descripcion"
+                        label="Descripción"
+                        auto-grow
+                        no-resize
+                        counter="250"
+                      ></v-textarea>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.fat"
-                        label="Fat (g)"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.carbs"
-                        label="Carbs (g)"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                    >
-                      <v-text-field
-                        v-model="editedItem.protein"
-                        label="Protein (g)"
-                      ></v-text-field>
-                    </v-col>
+
                   </v-row>
                 </v-container>
               </v-card-text>
@@ -136,52 +108,62 @@
           mdi-pencil
         </v-icon>
         <v-icon
-          small
+          medium
           @click="deleteItem(item)"
         >
-          mdi-delete
+        <template v-if="item.estado">mdi-toggle-switch</template>
+        <template v-else>mdi-toggle-switch-off-outline</template>        
         </v-icon>
       </template>
       <template v-slot:no-data>
         <v-btn
           color="primary"
-          @click="initialize"
+          @click="list"
         >
           Reset
         </v-btn>
       </template>
     </v-data-table>
   </v-app>
+  <!-- <pre>
+      {{ $data.categorias }}
+  </pre> -->
 </div>
 </template>
 
 
 <script>
+import axios from 'axios';
 export default {
       data: () => ({
     dialog: false,
     dialogDelete: false,
+    cargando: true,
     headers: [
+      { text: 'ID', value: 'id' },
       {
         text: 'Categorias',
         align: 'start',
         sortable: true,
         value: 'nombre',
-      },
+      }, 
       { text: 'Descripción', value: 'descripcion' },
       { text: 'Estado', value: 'estado' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     desserts: [],
+    categorias: [],
     editedIndex: -1,
     editedItem: {
+      id: 0,
       nombre: '',
-      descripcion: 0,
+      descripcion: '',
       estado: 0,
     },
     defaultItem: {
+      id: 0,
       nombre: '',
-      descripcion: 0,
+      descripcion: '',
       estado: 0,
     },
   }),
@@ -202,39 +184,72 @@ export default {
   },
 
   created () {
-    this.initialize()
+    this.list()
   },
 
   methods: {
-    initialize () {
-      this.desserts = [
-        {
-          nombre: 'Frozen Yogurt',
-          descripcion: 159,
-          estado: 6.0,
-        },
-
-      ]
-    },
-
     list(){
-
+        axios.get('http://localhost:3000/api/categoria/list', {
+          headers:{
+            token: this.$store.state.token
+          }
+        })
+        .then(response =>{
+            this.categorias = response.data;
+            this.cargando = false;
+        })
+        .catch(error =>{
+            console.log(error);
+        })
     },
 
     editItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = item.id
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = item.id
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1)
+      if (this.editedItem.estado === 1) {
+        //put
+        axios.put('http://localhost:3000/api/categoria/deactivate',{
+          "id": this.editedItem.id,
+        }, {
+          headers:{
+            token: this.$store.state.token
+          }
+        })
+        .then( response =>{
+          this.list();
+        })
+        .catch(error =>{
+          return error;
+        })
+      } else {
+        //post
+        axios.put('http://localhost:3000/api/categoria/activate',{
+          "id": this.editedItem.id,
+        }, {
+          headers:{
+            token: this.$store.state.token
+          }
+        })
+        .then( response =>{
+          this.list();
+        })
+        .catch(error =>{
+          return error;
+        })
+      }
+
+
+
       this.closeDelete()
     },
 
@@ -256,9 +271,39 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        //put
+        axios.put('http://localhost:3000/api/categoria/update',{
+          "id": this.editedItem.id,
+          "nombre": this.editedItem.nombre,
+          "descripcion": this.editedItem.descripcion,
+        }, {
+          headers:{
+            token: this.$store.state.token
+          }
+        })
+        .then( response =>{
+          this.list();
+        })
+        .catch(error =>{
+          return error;
+        })
       } else {
-        this.desserts.push(this.editedItem)
+        //post
+        axios.post('http://localhost:3000/api/categoria/add',{
+          "estado": 1,
+          "nombre": this.editedItem.nombre,
+          "descripcion": this.editedItem.descripcion,
+        }, {
+          headers:{
+            token: this.$store.state.token
+          }
+        })
+        .then( response =>{
+          this.list();
+        })
+        .catch(error =>{
+          return error;
+        })
       }
       this.close()
     },
