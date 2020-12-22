@@ -77,6 +77,15 @@
                     <v-col
                       cols="12"
                     >
+                      <v-text-field
+                        v-model="editedItem.color"
+                        label="Color"
+                      ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                      cols="12"
+                    >
                       <v-select
                         v-model="categoria"
                         label="Categoria"
@@ -189,6 +198,7 @@ export default {
         value: 'nombre',
       }, 
       { text: 'Descripción', value: 'descripcion' },
+      { text: 'Color', value: 'color' },
       { text: 'Categoría', value: 'categoria.nombre' },
       { text: 'Código', value: 'codigo' },
       { text: 'Estado', value: 'estado' },
@@ -202,6 +212,7 @@ export default {
       id: 0,
       nombre: '',
       descripcion: '',
+      color: '',
       codigo: '',
       estado: 0,
       categoria: {
@@ -213,6 +224,7 @@ export default {
       id: 0,
       nombre: '',
       descripcion: '',
+      color: '',
       codigo: '',
       estado: 0,
       categoria: {
@@ -343,6 +355,7 @@ export default {
           "id": this.editedItem.id,
           "nombre": this.editedItem.nombre,
           "descripcion": this.editedItem.descripcion,
+          'color': this.editedItem.color,
           "codigo": this.editedItem.codigo,
           "categoriaId": this.categoria.id,
         }, {
@@ -362,6 +375,7 @@ export default {
           "estado": 1,
           "nombre": this.editedItem.nombre,
           "descripcion": this.editedItem.descripcion,
+          "color": this.editedItem.color,          
           "codigo": this.editedItem.codigo,
           "categoriaId": this.categoria.id,
         }, {

@@ -38,7 +38,7 @@
   <v-card
     v-for="articulo in articulos" :key="articulo.id"
     class="mx-auto"
-    color="#BA9BCF"
+    :color="articulo.color"
     dark
     max-width="300"
   >
@@ -89,6 +89,8 @@
   </v-card>  
 </div>
 </div>
+
+
 
   <v-footer
     dark
@@ -170,9 +172,11 @@ export default {
     },
     mounted() {
      axios.get('http://localhost:3000/api/articulo/list')
-    .then(response => (this.articulos = response.data));
+    .then(response => {
+   const products = response.data
 
-    },
-    
+   this.articulos = products.filter(product => product.estado > 0)
+  })
+}
 }
 </script>
