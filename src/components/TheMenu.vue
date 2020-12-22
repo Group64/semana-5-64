@@ -11,13 +11,14 @@
 
         <router-link :to="{name: 'Home'}" class="mr-5 ml-5" exact>Inicio</router-link>
 
-        <template v-if="!this.$store.state.usuario">
+        <!-- <template v-if="!this.$store.state.usuario"> -->
+        <template>    
             <router-link :to="{name: 'Login'}" class="mr-5 ml-5 " exact>Login</router-link>    
         </template>
 
-        <template v-else>
-            <router-link :to="{name: 'Autenticado'}" class="mr-5 ml-5 " exact>Área de gestión</router-link>    
-        </template>
+        <!-- <template v-else>
+            <router-link :to="{name: 'Segura'}" class="mr-5 ml-5 " exact>Área de gestión</router-link>    
+        </template> -->
 
     </v-row>
     </div>

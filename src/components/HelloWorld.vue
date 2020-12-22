@@ -1,151 +1,184 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        />
-      </v-col>
-
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
-        </h1>
-
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a
-            href="https://community.vuetifyjs.com"
-            target="_blank"
-          >Discord Community</a>
-        </p>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
+<div>
+  <v-carousel v-model="model">
+    <v-carousel-item
+      v-for="(color) in colors"
+      :key="color"
+    >
+      <v-sheet
+        :color="color"
+        height="100%"
+        tile
       >
-        <h2 class="headline font-weight-bold mb-3">
-          What's next?
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ next.text }}
-          </a>
+        <v-row
+          class="fill-height"
+          align="center"
+          justify="center"
+        >
+          <div class="display-3">
+            <p class="text-md-center">LA MEJOR ASESORÍA EN CONSTRUCCIÓN DE MARCA</p>
+          </div>
         </v-row>
-      </v-col>
+      </v-sheet>
+    </v-carousel-item>
+  </v-carousel>
 
-      <v-col
-        class="mb-5"
-        cols="12"
+<v-banner
+  elevation="7"
+  icon="$mdiVuetify"
+  class="text-md-center"
+>Somos Sin señal, al querer construir su marca piense primero en nosotros. Más de una semana de experiencia en todos los sectores de la economía ofreciendo soluciones de calidad.</v-banner>
+
+
+<h2 class="text-md-center mt-5">Nuestro servicios</h2>
+
+
+    <div class="container-fluid mb-5 mt-5">
+    <div class="row mt-md-5 mt-sm-5 mt-xs-5">
+  <v-card
+    v-for="articulo in articulos" :key="articulo.id"
+    class="mx-auto"
+    color="#26c6da"
+    dark
+    max-width="300"
+  >
+    <v-card-title>
+      <v-icon
+        large
+        left
       >
-        <h2 class="headline font-weight-bold mb-3">
-          Important Links
-        </h2>
+        mdi-signal
+      </v-icon>
+      <span class="title font-weight-black">{{articulo.nombre}}</span>
+    </v-card-title>
 
-        <v-row justify="center">
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ link.text }}
-          </a>
+    <v-card-text class="headline font-weight-bold">
+      {{articulo.descripcion}}
+    </v-card-text>
+
+    <v-card-actions>
+      <v-list-item class="grow">
+        <v-list-item-avatar color="grey darken-3">
+          <v-img
+            class="elevation-6"
+            alt=""
+            src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
+          ></v-img>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title>Evan You</v-list-item-title>
+        </v-list-item-content>
+
+        <v-row
+          align="center"
+          justify="end"
+        >
+          <v-icon class="mr-1">
+            mdi-heart
+          </v-icon>
+          <span class="subheading mr-2">256</span>
+          <span class="mr-1">·</span>
+          <v-icon class="mr-1">
+            mdi-share-variant
+          </v-icon>
+          <span class="subheading">45</span>
         </v-row>
-      </v-col>
+      </v-list-item>
+    </v-card-actions>
+  </v-card>  
+</div>
+</div>
 
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-3">
-          Ecosystem
-        </h2>
+  <v-footer
+    dark
+    padless
+  >
+    <v-card
+      flat
+      tile
+      class="indigo lighten-1 white--text text-center"
+    >
+      <v-card-text>
+        <v-btn
+          v-for="icon in icons"
+          :key="icon"
+          class="mx-4 white--text"
+          icon
+        >
+          <v-icon size="24px">
+            {{ icon }}
+          </v-icon>
+        </v-btn>
+      </v-card-text>
 
-        <v-row justify="center">
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+      <v-card-text class="white--text pt-0">
+        Los mejores en asesoría de marca, todos nuestros colaboradores están listos para resolver sus inquietudes atendiendo de la mejor manera todos sus requerimientos. Su satisfacción es nuestro compromiso. No dude en contactarnos al <a href="tel:+5744444444">(+57) 4 4444444</a>o escribanos al correo <a href="mailto:sinseñal@gmail.com">sinseñal@gmail.com</a>
+      </v-card-text>
+<a href="https://github.com/Group64">https://github.com/Group64</a>
+      <v-divider></v-divider>
+
+      <v-card-text class="white--text">
+        {{ new Date().getFullYear() }} — <strong>Sin señal</strong>
+      </v-card-text>
+    </v-card>
+  </v-footer>
+
+<pre>
+  {{articulos}}
+</pre>
+
+
+    </div>
 </template>
 
-<script>
-  export default {
-    name: 'HelloWorld',
 
-    data: () => ({
-      ecosystem: [
+<script>
+import axios from 'axios';
+export default {
+    name: 'HelloWorld',
+     data() {
+        return {
+            datos: null,
+            articulos: [],
+            items: [
         {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader',
+          text: 'Dashboard',
+          disabled: false,
+          href: 'breadcrumbs_dashboard',
         },
         {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify',
+          text: 'Link 1',
+          disabled: false,
+          href: 'breadcrumbs_link_1',
         },
         {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify',
-        },
-      ],
-      importantLinks: [
-        {
-          text: 'Documentation',
-          href: 'https://vuetifyjs.com',
-        },
-        {
-          text: 'Chat',
-          href: 'https://community.vuetifyjs.com',
-        },
-        {
-          text: 'Made with Vuetify',
-          href: 'https://madewithvuejs.com/vuetify',
-        },
-        {
-          text: 'Twitter',
-          href: 'https://twitter.com/vuetifyjs',
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify',
+          text: 'Link 2',
+          disabled: false,
+          href: 'breadcrumbs_link_2',
         },
       ],
-      whatsNext: [
-        {
-          text: 'Explore components',
-          href: 'https://vuetifyjs.com/components/api-explorer',
-        },
-        {
-          text: 'Select a layout',
-          href: 'https://vuetifyjs.com/getting-started/pre-made-layouts',
-        },
-        {
-          text: 'Frequently Asked Questions',
-          href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-        },
+      colors: [
+        'primary',
+        'secondary',
+        'yellow darken-2',
+        'red',
+        'orange',
       ],
-    }),
-  }
+      icons: [
+        'mdi-facebook',
+        'mdi-twitter',
+        'mdi-linkedin',
+        'mdi-instagram',
+      ],  
+        };
+
+    },
+    mounted() {
+     axios.get('http://localhost:3000/api/articulo/list')
+    .then(response => (this.articulos = response.data));
+
+    },
+    
+}
 </script>
